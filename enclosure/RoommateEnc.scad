@@ -7,22 +7,21 @@ board_width = in_to_mm(1.85);
 board_thickness = in_to_mm(0.064);
 common_clearance = in_to_mm(0.030);
 board_guide_length = in_to_mm(0.50);
-board_guide_width = in_to_mm(0.1250);
+board_guide_width = in_to_mm(0.0625);
+board_guide_height = board_thickness * 2;
 board_guide_width_with_clearance = board_guide_width + common_clearance;
 enclosure_wall_thickness = in_to_mm(0.100);
 sides_height = in_to_mm(1);
 notch_height = in_to_mm(0.20);
-board_bed_height = in_to_mm(0.25);
+board_bed_height = in_to_mm(0.125);
 
 
 module draw_connector() {
     // This is used to draw the connector on the board AND to extrude the cutout for it in the side of the enclosure
-    translate([-board_guide_width_with_clearance, -board_guide_width_with_clearance, 0]) {
-        translate([in_to_mm(1.45), -10, board_thickness + in_to_mm(0.25)]) {
-                connector_width = in_to_mm(0.5);
-                connector_height = in_to_mm(0.375);
-                cube(size = [connector_width, 20, connector_height]);
-        }
+    connector_width = in_to_mm(0.5);
+    connector_height = in_to_mm(0.375);
+    translate([in_to_mm(0.95), -10, board_thickness + in_to_mm(0.25)]) {
+        cube(size = [connector_width, 20, connector_height]);
     }
 }
 
@@ -38,7 +37,7 @@ module draw_board() {
 
 
 module draw_board_bed() {
-    board_bed_width = in_to_mm(0.2);
+    board_bed_width = in_to_mm(0.125);
     
     translate([0, 0, -board_bed_height]) {
         linear_extrude(board_bed_height) {
@@ -56,8 +55,8 @@ draw_board_bed();
 // The board guides that hold the corners of the board ******************************************
 module guide() {
     translate([-board_guide_width_with_clearance, -board_guide_width_with_clearance, -board_bed_height]) {
-        cube([board_guide_width, board_guide_length, board_thickness + board_bed_height]);
-        cube([board_guide_length, board_guide_width, board_thickness + board_bed_height]);
+        cube([board_guide_width, board_guide_length, board_guide_height + board_bed_height]);
+        cube([board_guide_length, board_guide_width, board_guide_height+ board_bed_height]);
     }
 }
 
